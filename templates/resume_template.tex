@@ -1,0 +1,51 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=0.75in}
+\usepackage{hyperref}
+
+\newcommand{\projectheader}[2]{\noindent\textbf{#1} \hfill \textit{#2}}
+\newenvironment{cvitemize}{\begin{itemize}}{\end{itemize}}
+\hypersetup{pdfborder={0 0 0}}
+\begin{document}
+
+\begin{center}
+    {\Huge \textbf{<<NAME>>}} \\
+    \vspace{2mm}
+    {\large <<SUBTITLE>>} \\
+    \vspace{2mm}
+    <<PHONE>> \ $|$ \ <<EMAIL>> \ $|$ \ \href{<<GITHUB_URL>>}{/<<GITHUB_TEXT>>}
+\end{center}
+
+\vspace{2mm}
+\section*{Education}
+\hrule\vspace{2mm}
+\begin{center}
+\begin{tabular}{|l|l|p{3cm}|l|}
+\hline
+\textbf{Year} & \textbf{Degree} & \textbf{Institute} & \textbf{CGPA / \%} \\
+\hline
+<<EDUCATION_ROWS>>
+\end{tabular}
+\end{center}
+
+\section*{Technical Skills}
+\hrule\vspace{2mm}
+\begin{itemize}
+<<SKILL_ITEMS>>
+\end{itemize}
+
+\section*{Projects}
+\hrule\vspace{2mm}
+<<PROJECT_ITEMS>>
+
+\section*{Achievements}
+\hrule\vspace{2mm}
+\begin{itemize}
+<<ACHIEVEMENT_ITEMS>>
+\end{itemize}
+
+\section*{Positions of Responsibility}
+\hrule\vspace{2mm}
+<<RESPONSIBILITY_ITEMS>>
+\end{document}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+<style>
+:root {
+  --bg1: #0f2027;
+  --bg2: #203a43;
+  --bg3: #2c5364;
+  --card: #ffffff;
+  --primary: #00b4d8;
+  --text: #1f2937;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeBg 1.2s ease;
+}
+
+/* Card */
+.login-box {
+  width: 100%;
+  max-width: 380px;
+  background: var(--card);
+  padding: 40px 35px;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  animation: zoomIn 0.8s ease;
+}
+
+/* Heading */
+.login-box h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--text);
+  font-size: 1.9rem;
+}
+
+/* Messages */
+.message {
+  background: #e0f7fa;
+  color: #065f73;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  animation: slideFade 0.6s ease;
+}
+
+/* Inputs */
+.login-box p {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.login-box input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(0,180,216,0.25);
+}
+
+/* Button */
+.login-box input[type="submit"] {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-box input[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0,180,216,0.5);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.85rem;
+}
+
+.footer a {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideFade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Mobile */
+@media (max-width: 420px) {
+  .login-box {
+    padding: 30px 25px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <h1>Login Now</h1>
+
+  {% for message in messages %}
+    <div class="message">{{ message }}</div>
+  {% endfor %}
+
+  <form method="post" action="login">
+    {% csrf_token %}
+
+    <p>Username</p>
+    <input type="text" name="username" required>
+
+    <p>Password</p>
+    <input type="password" name="password" required>
+
+    <input type="submit" value="Login">
+  </form>
+
+</div>
+
+</body>
+</html>
