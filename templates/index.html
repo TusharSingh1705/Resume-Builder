@@ -1,407 +1,708 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>AI Resume Builder</title>-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
-<!--    <style>-->
-<!--        body { background: #f8f9fa; }-->
-<!--        .dynamic-section { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="container mt-5">-->
-<!--    <h1 class="text-center mb-4 text-primary">🚀 AI Resume Builder</h1>-->
-
-<!--    <div class="card shadow">-->
-<!--        <div class="card-body">-->
-<!--            <form method="post" id="resumeForm">-->
-<!--                {% csrf_token %}-->
-
-<!--                <div class="row">-->
-<!--                    <div class="col-md-6 mb-3">{{ form.name }}</div>-->
-<!--                    <div class="col-md-6 mb-3">{{ form.email }}</div>-->
-<!--                </div>-->
-<!--                <div class="row">-->
-<!--                    <div class="col-md-6 mb-3">{{ form.phone }}</div>-->
-<!--                    <div class="col-md-6 mb-3">{{ form.linkedin }}</div>-->
-<!--                </div>-->
-
-<!--                <div class="mb-4">{{ form.summary }}</div>-->
-
-<!--                &lt;!&ndash; Experience &ndash;&gt;-->
-<!--                <div class="dynamic-section">-->
-<!--                    <h5>💼 Experience-->
-<!--                        <span id="add-exp" class="text-success" style="cursor:pointer; font-weight:bold;">+ Add Experience</span>-->
-<!--                    </h5>-->
-<!--                    <div id="experience-container"></div>-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; Education &ndash;&gt;-->
-<!--                <div class="dynamic-section">-->
-<!--                    <h5>🎓 Education-->
-<!--                        <span id="add-edu" class="text-success" style="cursor:pointer; font-weight:bold;">+ Add Education</span>-->
-<!--                    </h5>-->
-<!--                    <div id="education-container"></div>-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; Projects &ndash;&gt;-->
-<!--                <div class="dynamic-section">-->
-<!--                    <h5>🚀 Projects-->
-<!--                        <span id="add-proj" class="text-success" style="cursor:pointer; font-weight:bold;">+ Add Project</span>-->
-<!--                    </h5>-->
-<!--                    <div id="projects-container"></div>-->
-<!--                </div>-->
-
-<!--                <div class="mb-4">{{ form.skills }}</div>-->
-
-<!--                <button type="submit" class="btn btn-success btn-lg w-100 mt-3">Generate Professional Resume →</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<script>-->
-<!--    let expCount = 0;-->
-<!--    let eduCount = 0;-->
-<!--    let projCount = 0;-->
-
-<!--    // ==================== ADD EXPERIENCE ====================-->
-<!--    document.getElementById('add-exp').addEventListener('click', function() {-->
-<!--        const container = document.getElementById('experience-container');-->
-<!--        const html = `-->
-<!--            <div class="row mb-3 border-bottom pb-3" id="exp-row-${expCount}">-->
-<!--                <div class="col-md-4">-->
-<!--                    <input type="text" name="exp_role_${expCount}" class="form-control" placeholder="Role (e.g. Software Engineer)">-->
-<!--                </div>-->
-<!--                <div class="col-md-4">-->
-<!--                    <input type="text" name="exp_company_${expCount}" class="form-control" placeholder="Company">-->
-<!--                </div>-->
-<!--                <div class="col-md-3">-->
-<!--                    <input type="text" name="exp_duration_${expCount}" class="form-control" placeholder="Duration (2024-Present)">-->
-<!--                </div>-->
-<!--                <div class="col-12 mt-2">-->
-<!--                    <textarea name="exp_description_${expCount}" class="form-control" rows="2" placeholder="Key achievements..."></textarea>-->
-<!--                </div>-->
-<!--                <div class="col-12 text-end mt-2">-->
-<!--                    <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.row').remove()">Remove</button>-->
-<!--                </div>-->
-<!--            </div>`;-->
-<!--        container.innerHTML += html;-->
-<!--        expCount++;-->
-<!--        document.getElementById('resumeForm').insertAdjacentHTML('beforeend', `<input type="hidden" name="exp_count" value="${expCount}">`);-->
-<!--    });-->
-
-<!--    // ==================== ADD EDUCATION ====================-->
-<!--    document.getElementById('add-edu').addEventListener('click', function() {-->
-<!--        const container = document.getElementById('education-container');-->
-<!--        const html = `-->
-<!--            <div class="row mb-3" id="edu-row-${eduCount}">-->
-<!--                <div class="col-md-5">-->
-<!--                    <input type="text" name="edu_degree_${eduCount}" class="form-control" placeholder="Degree (e.g. B.Tech CSE)">-->
-<!--                </div>-->
-<!--                <div class="col-md-5">-->
-<!--                    <input type="text" name="edu_college_${eduCount}" class="form-control" placeholder="College / University">-->
-<!--                </div>-->
-<!--                <div class="col-md-2">-->
-<!--                    <input type="text" name="edu_year_${eduCount}" class="form-control" placeholder="Year">-->
-<!--                </div>-->
-<!--                <div class="col-12 text-end mt-2">-->
-<!--                    <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.row').remove()">Remove</button>-->
-<!--                </div>-->
-<!--            </div>`;-->
-<!--        container.innerHTML += html;-->
-<!--        eduCount++;-->
-<!--        document.getElementById('resumeForm').insertAdjacentHTML('beforeend', `<input type="hidden" name="edu_count" value="${eduCount}">`);-->
-<!--    });-->
-
-<!--    // ==================== ADD PROJECT ====================-->
-<!--    document.getElementById('add-proj').addEventListener('click', function() {-->
-<!--        const container = document.getElementById('projects-container');-->
-<!--        const html = `-->
-<!--            <div class="row mb-3 border-bottom pb-3" id="proj-row-${projCount}">-->
-<!--                <div class="col-md-6">-->
-<!--                    <input type="text" name="proj_title_${projCount}" class="form-control" placeholder="Project Title">-->
-<!--                </div>-->
-<!--                <div class="col-12 mt-2">-->
-<!--                    <textarea name="proj_description_${projCount}" class="form-control" rows="2" placeholder="Project description..."></textarea>-->
-<!--                </div>-->
-<!--                <div class="col-12 text-end mt-2">-->
-<!--                    <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.row').remove()">Remove</button>-->
-<!--                </div>-->
-<!--            </div>`;-->
-<!--        container.innerHTML += html;-->
-<!--        projCount++;-->
-<!--        document.getElementById('resumeForm').insertAdjacentHTML('beforeend', `<input type="hidden" name="proj_count" value="${projCount}">`);-->
-<!--    });-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Resume Builder</title>
+  <meta name="description" content="Generate professional AI-powered resumes with LaTeX quality PDF output.">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       CSS Variables (Design Tokens)
+       ============================================================ */
     :root {
-        --primary-bg: #0f172a;    /* Deep Navy */
-        --secondary-bg: #1e293b;  /* Lighter Navy for cards */
-        --accent-mint: #64ffda;   /* Mint Green for highlights */
-        --accent-blue: #38bdf8;   /* Soft Blue for buttons */
-        --text-main: #f8fafc;     /* Off-white text */
-        --text-muted: #94a3b8;    /* Grey text */
-        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --bg:       #0a0a0f;
+      --surface:  #111118;
+      --surface2: #1a1a24;
+      --border:   #2a2a3a;
+      --border2:  #3a3a50;
+      --accent:   #7c5cfc;
+      --accent2:  #a78bfa;
+      --teal:     #14b8a6;
+      --text:     #f0eeff;
+      --muted:    #8b8aa0;
+      --muted2:   #5a5a70;
+      --danger:   #ef4444;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-        background-color: var(--primary-bg) !important;
-        color: var(--text-main) !important;
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
     }
 
-    /* Unified Card & Section Styling */
-    .card, .dynamic-section, .login-box, .counter-container, .preview-box {
-        background: var(--secondary-bg) !important;
-        border: 1px solid rgba(100, 255, 218, 0.1) !important;
-        border-radius: 16px !important;
-        padding: 2rem !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
-        transition: var(--transition);
-        color: var(--text-main) !important;
+    /* ── Navbar ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 40px;
+      background: rgba(10, 10, 15, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--accent2);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span { color: var(--teal); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent2); }
+
+    .badge {
+      background: linear-gradient(135deg, var(--accent), var(--teal));
+      color: #fff;
+      font-size: 10px;
+      padding: 3px 10px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 70px 40px 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 700px 350px at 50% 0%, rgba(124,92,252,0.13), transparent);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: rgba(124,92,252,0.1);
+      border: 1px solid rgba(124,92,252,0.3);
+      color: var(--accent2);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 22px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+      line-height: 1.15;
+      margin-bottom: 14px;
+      letter-spacing: -1px;
+      color: var(--text);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent2);
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 300;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Layout ── */
+    .app-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 30px 30px 80px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
     }
 
     .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(100, 255, 218, 0.07) !important;
-        border-color: var(--accent-mint) !important;
+      border-color: var(--border2);
     }
 
-    /* Buttons & Interactions */
-    .btn, button, input[type="submit"] {
-        border-radius: 12px !important;
-        padding: 12px 24px !important;
-        font-weight: 700 !important;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: var(--transition) !important;
-        cursor: pointer;
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
-    .btn-primary, .btn-success, .btn-blue, .btn-reset {
-        background: linear-gradient(135deg, var(--accent-blue), #0ea5e9) !important;
-        color: #fff !important;
-        border: none !important;
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
     }
 
-    .btn:hover, button:hover {
-        filter: brightness(1.2);
-        transform: scale(1.03);
-        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    .card-header h2 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      margin: 0 0 2px;
     }
 
-    /* Input Fields */
-    input, textarea, .form-control {
-        background: rgba(15, 23, 42, 0.8) !important;
-        border: 1px solid #334155 !important;
-        color: var(--text-main) !important;
-        border-radius: 10px !important;
-        padding: 12px !important;
-        transition: var(--transition);
+    .card-header p {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0;
     }
 
-    input:focus, textarea:focus {
-        border-color: var(--accent-mint) !important;
-        box-shadow: 0 0 0 4px rgba(100, 255, 218, 0.15) !important;
-        outline: none;
+    /* ── Section heading row ── */
+    .section-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
     }
 
-    /* Headings & Text */
-    h1, h2, h3, h4, .text-primary, .title {
-        color: var(--accent-mint) !important;
-        font-weight: 700 !important;
+    /* ── Form elements ── */
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 5px;
+      margin-top: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .text-muted, .subtitle {
-        color: var(--text-muted) !important;
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: vertical;
     }
 
-    /* Navigation / Links */
-    a {
-        color: var(--accent-blue);
-        text-decoration: none;
-        transition: var(--transition);
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="url"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124,92,252,0.15);
     }
 
-    a:hover {
-        color: var(--accent-mint);
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--muted2);
     }
-</style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Resume Builder</title>
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* ── Dynamic rows ── */
+    .dynamic-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    /* ── Buttons ── */
+    .btn-add {
+      background: rgba(124,92,252,0.1);
+      border: 1px solid rgba(124,92,252,0.3);
+      color: var(--accent2);
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-add:hover {
+      background: rgba(124,92,252,0.2);
+      border-color: var(--accent2);
+    }
+
+    .btn-remove {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      color: #f87171;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background 0.2s;
+      float: right;
+      margin-top: 8px;
+    }
+
+    .btn-remove:hover {
+      background: rgba(239,68,68,0.15);
+    }
+
+    .btn-enhance {
+      background: rgba(20,184,166,0.1);
+      border: 1px solid rgba(20,184,166,0.3);
+      color: var(--teal);
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-enhance:hover { background: rgba(20,184,166,0.2); }
+    .btn-enhance:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), #5b3fd4);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover  { opacity: 0.9; transform: translateY(-1px); }
+    .btn-submit:active { transform: scale(0.98); }
+
+    /* ── Loading Overlay ── */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,15,0.92);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .loading-overlay.active { display: flex; }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--accent2);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-size: 16px;
+      color: var(--accent2);
+      font-weight: 500;
+    }
+
+    .loading-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Login message ── */
+    .login-msg {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .login-msg a {
+      color: var(--accent2);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .login-msg a:hover { color: var(--teal); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 28px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted2);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      nav          { padding: 12px 16px; }
+      .hero        { padding: 50px 20px 40px; }
+      .app-wrapper { padding: 20px 16px 60px; }
+      .grid-2      { grid-template-columns: 1fr; }
+      .grid-3      { grid-template-columns: 1fr; }
+      .grid-4      { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans p-8">
-{% if user.is_authenticated %}
+<body>
 
-<div class="max-w-4xl mx-auto bg-white p-8 rounded shadow">
-    <h1 class="text-3xl font-bold mb-6 border-b pb-2 flex items-center gap-2">
-        <span>📄</span> Generate Your AI-Powered Resume
-    </h1>
+  <!-- ── LOADING OVERLAY ── -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Generating Your Resume...</p>
+    <p class="loading-sub">Compiling LaTeX template — this may take a few seconds.</p>
+  </div>
 
+  <!-- ── NAVBAR ── -->
+  <nav>
+    <div class="logo">Resume<span>AI</span></div>
+    <div class="nav-links">
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}">📂 Dashboard</a>
+        <a href="{% url 'user_logout' %}">Logout</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <p class="eyebrow">🚀 AI Resume Builder</p>
+    <h1>Generate Your<br /><em>Professional Resume.</em></h1>
+    <p class="hero-sub">Fill in your details below. AI will enhance your bullet points and generate a clean, LaTeX-compiled PDF.</p>
+  </header>
+
+  <!-- ── MAIN ── -->
+  <main class="app-wrapper">
+
+    {% if user.is_authenticated %}
     <form action="{% url 'generate_resume' %}" method="POST" id="resumeForm">
-        {% csrf_token %}
+      {% csrf_token %}
 
-        <!-- PERSONAL INFO -->
-        <h2 class="text-xl font-semibold mt-6 mb-3 text-blue-600">Personal Information</h2>
-        <div class="grid grid-cols-2 gap-4">
-            <input type="text" name="name" placeholder="Full Name (e.g. PRANAV NAGPAL)" class="border p-2 rounded w-full" required>
-            <input type="text" name="subtitle" placeholder="Subtitle (e.g. Undergraduate Student...)" class="border p-2 rounded w-full" required>
-            <input type="text" name="phone" placeholder="Phone Number" class="border p-2 rounded w-full" required>
-            <input type="email" name="email" placeholder="Email Address" class="border p-2 rounded w-full" required>
-            <input type="text" name="github" placeholder="Github URL (without https://)" class="border p-2 rounded w-full" required>
+      <!-- PERSONAL INFO -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon" style="background:rgba(124,92,252,0.12)">👤</span>
+          <div>
+            <h2>Personal Information</h2>
+            <p>Your name, contact details &amp; links</p>
+          </div>
         </div>
+        <div class="grid-2">
+          <div>
+            <label for="field-name">Full Name</label>
+            <input type="text" id="field-name" name="name" placeholder="e.g. Tushar Singh" required>
+          </div>
+          <div>
+            <label for="field-subtitle">Subtitle / Degree</label>
+            <input type="text" id="field-subtitle" name="subtitle" placeholder="e.g. B.Tech CSE, MANIT Bhopal" required>
+          </div>
+          <div>
+            <label for="field-phone">Phone Number</label>
+            <input type="text" id="field-phone" name="phone" placeholder="e.g. 9876543210" required>
+          </div>
+          <div>
+            <label for="field-email">Email Address</label>
+            <input type="email" id="field-email" name="email" placeholder="e.g. name@email.com" required>
+          </div>
+          <div>
+            <label for="field-github">GitHub URL</label>
+            <input type="text" id="field-github" name="github" placeholder="e.g. github.com/username">
+          </div>
+          <div>
+            <label for="field-linkedin">LinkedIn URL</label>
+            <input type="text" id="field-linkedin" name="linkedin" placeholder="e.g. linkedin.com/in/username">
+          </div>
+        </div>
+      </div>
 
-        <!-- EDUCATION -->
-        <div class="flex justify-between items-center mt-8 mb-3">
-            <h2 class="text-xl font-semibold text-blue-600">Education</h2>
-            <button type="button" onclick="addEdu()" class="bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">+ Add</button>
+      <!-- EDUCATION -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon" style="background:rgba(248,113,113,0.12)">🎓</span>
+          <div>
+            <h2>Education</h2>
+            <p>Year · Degree · Institute · CGPA</p>
+          </div>
+        </div>
+        <div class="section-row">
+          <span style="font-size:13px;color:var(--muted);">Add your education entries below</span>
+          <button type="button" class="btn-add" onclick="addEdu()">+ Add</button>
         </div>
         <div id="edu-container">
-            <div class="grid grid-cols-4 gap-2 mb-2 edu-row">
-                <input type="text" name="edu_year[]" placeholder="Year (2024-2028)" class="border p-2 rounded" required>
-                <input type="text" name="edu_degree[]" placeholder="Degree (B.Tech CSE)" class="border p-2 rounded" required>
-                <input type="text" name="edu_institute[]" placeholder="Institute" class="border p-2 rounded" required>
-                <input type="text" name="edu_cgpa[]" placeholder="CGPA / %" class="border p-2 rounded" required>
-            </div>
+          <div class="dynamic-row grid-4">
+            <input type="text" name="edu_year[]" placeholder="Year (2024-2028)" required>
+            <input type="text" name="edu_degree[]" placeholder="Degree (B.Tech CSE)" required>
+            <input type="text" name="edu_institute[]" placeholder="Institute" required>
+            <input type="text" name="edu_cgpa[]" placeholder="CGPA / %" required>
+          </div>
         </div>
+      </div>
 
-        <!-- ACHIEVEMENTS -->
-        <div class="flex justify-between items-center mt-8 mb-3">
-            <h2 class="text-xl font-semibold text-blue-600">Achievements</h2>
-            <button type="button" onclick="addAch()" class="bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">+ Add</button>
+      <!-- ACHIEVEMENTS -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon" style="background:rgba(251,191,36,0.12)">🏆</span>
+          <div>
+            <h2>Achievements</h2>
+            <p>e.g. JEE Main: Secured All India Rank 10806</p>
+          </div>
+        </div>
+        <div class="section-row">
+          <span style="font-size:13px;color:var(--muted);">Add your achievements below</span>
+          <button type="button" class="btn-add" onclick="addAch()">+ Add</button>
         </div>
         <div id="ach-container">
-            <input type="text" name="achievement[]" placeholder="e.g. JEE Main: Secured All India Rank 10806." class="border p-2 rounded w-full mb-2">
+          <input type="text" name="achievement[]" placeholder="e.g. JEE Main: Secured All India Rank 10806" style="margin-bottom:8px;">
         </div>
+      </div>
 
-        <!-- PROJECTS (WITH AI) -->
-        <div class="flex justify-between items-center mt-8 mb-3">
-            <h2 class="text-xl font-semibold text-blue-600">Key Projects</h2>
-            <button type="button" onclick="addProj()" class="bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">+ Add</button>
+      <!-- PROJECTS -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon" style="background:rgba(52,211,153,0.12)">🚀</span>
+          <div>
+            <h2>Key Projects</h2>
+            <p>Write rough notes — AI will enhance to professional bullet points</p>
+          </div>
+        </div>
+        <div class="section-row">
+          <span style="font-size:13px;color:var(--muted);">Add your projects below</span>
+          <button type="button" class="btn-add" onclick="addProj()">+ Add</button>
         </div>
         <div id="proj-container">
-            <div class="border p-4 rounded bg-gray-50 mb-4 proj-row">
-                <div class="grid grid-cols-2 gap-2 mb-2">
-                    <input type="text" name="proj_title[]" placeholder="Project Title" class="border p-2 rounded" required>
-                    <input type="text" name="proj_tech[]" placeholder="Tech Stack (Python, Django...)" class="border p-2 rounded" required>
-                </div>
-                <div class="relative">
-                    <textarea name="proj_desc[]" rows="3" placeholder="Enter rough bullet points here..." class="border p-2 rounded w-full pr-32" required></textarea>
-                    <button type="button" onclick="enhanceText(this)" class="absolute bottom-3 right-3 bg-purple-100 text-purple-700 text-sm px-3 py-1 rounded hover:bg-purple-200 transition">✨ Enhance</button>
-                </div>
+          <div class="dynamic-row">
+            <div class="grid-2" style="margin-bottom:10px;">
+              <input type="text" name="proj_title[]" placeholder="Project Title" required>
+              <input type="text" name="proj_tech[]" placeholder="Tech Stack (Python, Django...)" required>
             </div>
+            <textarea name="proj_desc[]" rows="3" placeholder="Enter rough bullet points here (one per line)..." required></textarea>
+            <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance with AI</button>
+          </div>
         </div>
+      </div>
 
-        <!-- SKILLS -->
-        <div class="flex justify-between items-center mt-8 mb-3">
-            <h2 class="text-xl font-semibold text-blue-600">Technical Skills</h2>
-            <button type="button" onclick="addSkill()" class="bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">+ Add</button>
+      <!-- SKILLS -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon" style="background:rgba(20,184,166,0.12)">⚡</span>
+          <div>
+            <h2>Technical Skills</h2>
+            <p>Category: Skill 1, Skill 2 (e.g. Languages: C++, Python)</p>
+          </div>
+        </div>
+        <div class="section-row">
+          <span style="font-size:13px;color:var(--muted);">Add skill categories below</span>
+          <button type="button" class="btn-add" onclick="addSkill()">+ Add</button>
         </div>
         <div id="skill-container">
-            <input type="text" name="skill[]" placeholder="Category: Skill 1, Skill 2 (e.g. Languages: C++, Python)" class="border p-2 rounded w-full mb-2">
+          <input type="text" name="skill[]" placeholder="Category: Skill 1, Skill 2 (e.g. Languages: C++, Python)" style="margin-bottom:8px;">
         </div>
+      </div>
 
-        <!-- RESPONSIBILITIES (WITH AI) -->
-        <div class="flex justify-between items-center mt-8 mb-3">
-            <h2 class="text-xl font-semibold text-blue-600">Positions of Responsibility</h2>
-            <button type="button" onclick="addResp()" class="bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">+ Add</button>
+      <!-- RESPONSIBILITIES -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon" style="background:rgba(124,92,252,0.12)">🏅</span>
+          <div>
+            <h2>Positions of Responsibility</h2>
+            <p>Role · Organization · Date range</p>
+          </div>
+        </div>
+        <div class="section-row">
+          <span style="font-size:13px;color:var(--muted);">Add your positions below</span>
+          <button type="button" class="btn-add" onclick="addResp()">+ Add</button>
         </div>
         <div id="resp-container">
-            <div class="border p-4 rounded bg-gray-50 mb-4 resp-row">
-                <div class="grid grid-cols-2 gap-2 mb-2">
-                    <input type="text" name="resp_title[]" placeholder="Role at Organization" class="border p-2 rounded" required>
-                    <input type="text" name="resp_date[]" placeholder="Date (Jun 2025 - Jan 2026)" class="border p-2 rounded" required>
-                </div>
-                <div class="relative">
-                    <textarea name="resp_desc[]" rows="2" placeholder="Enter rough responsibilities here..." class="border p-2 rounded w-full pr-32" required></textarea>
-                    <button type="button" onclick="enhanceText(this)" class="absolute bottom-3 right-3 bg-purple-100 text-purple-700 text-sm px-3 py-1 rounded hover:bg-purple-200 transition">✨ Enhance</button>
-                </div>
+          <div class="dynamic-row">
+            <div class="grid-2" style="margin-bottom:10px;">
+              <input type="text" name="resp_title[]" placeholder="Role at Organization" required>
+              <input type="text" name="resp_date[]" placeholder="Date (Jun 2025 - Jan 2026)" required>
             </div>
+            <textarea name="resp_desc[]" rows="2" placeholder="Enter rough responsibilities here (one per line)..." required></textarea>
+            <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance with AI</button>
+          </div>
         </div>
+      </div>
 
-        <button type="submit" class="mt-8 w-full bg-blue-600 text-white font-bold py-3 px-4 rounded hover:bg-blue-700 text-lg transition">
-            Generate PDF Resume
-        </button>
+      <button type="submit" class="btn-submit" id="submitBtn">Generate PDF Resume →</button>
     </form>
-     {% else %}
-        <h2><a href="{% url 'user_login' %}">User not logged in <br>
-            Login</a>
-        </a></h2>
+
+    {% else %}
+    <div class="login-msg">
+      <p style="font-size:18px;margin-bottom:12px;">You are not logged in.</p>
+      <a href="{% url 'user_login' %}">Click here to Login →</a>
+    </div>
     {% endif %}
-</div>
 
-<script>
-    // --- GEN AI LOGIC ---
+  </main>
+
+  <footer>
+  </footer>
+
+  <script>
+    // ── AI Enhancement ──
     async function enhanceText(btn) {
-        const textarea = btn.previousElementSibling;
-        const originalText = textarea.value;
-        if (!originalText.trim()) return;
+      const textarea = btn.previousElementSibling;
+      const originalText = textarea.value;
+      if (!originalText.trim()) return;
 
-        const originalBtnText = btn.innerHTML;
-        btn.innerHTML = "⏳ Enhancing...";
-        btn.disabled = true;
+      const originalBtnText = btn.innerHTML;
+      btn.innerHTML = "⏳ Enhancing...";
+      btn.disabled = true;
 
-        try {
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            const response = await fetch('/enhance/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({text: originalText})
-            });
-
-            const data = await response.json();
-            if (data.enhanced_text) {
-                textarea.value = data.enhanced_text;
-            } else if (data.error) {
-                alert("Error: " + data.error);
-            }
-        } catch (error) {
-            console.error("Error enhancing text:", error);
-            alert("Failed to connect to the AI service.");
-        } finally {
-            btn.innerHTML = originalBtnText;
-            btn.disabled = false;
+      try {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const response = await fetch('/enhance/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+          body: JSON.stringify({ text: originalText })
+        });
+        const data = await response.json();
+        if (data.enhanced_text) {
+          textarea.value = data.enhanced_text;
+        } else if (data.error) {
+          alert("Error: " + data.error);
         }
+      } catch (error) {
+        alert("Failed to connect to the AI service.");
+      } finally {
+        btn.innerHTML = originalBtnText;
+        btn.disabled = false;
+      }
     }
 
-    // --- DOM MANIPULATION FOR ADDING FIELDS ---
+    // ── Dynamic Row Builders ──
     function addEdu() {
-        const html = `<div class="grid grid-cols-4 gap-2 mb-2"><input type="text" name="edu_year[]" placeholder="Year" class="border p-2 rounded" required><input type="text" name="edu_degree[]" placeholder="Degree" class="border p-2 rounded" required><input type="text" name="edu_institute[]" placeholder="Institute" class="border p-2 rounded" required><input type="text" name="edu_cgpa[]" placeholder="CGPA / %" class="border p-2 rounded" required></div>`;
-        document.getElementById('edu-container').insertAdjacentHTML('beforeend', html);
+      document.getElementById('edu-container').insertAdjacentHTML('beforeend', `
+        <div class="dynamic-row grid-4">
+          <input type="text" name="edu_year[]" placeholder="Year" required>
+          <input type="text" name="edu_degree[]" placeholder="Degree" required>
+          <input type="text" name="edu_institute[]" placeholder="Institute" required>
+          <input type="text" name="edu_cgpa[]" placeholder="CGPA / %" required>
+          <button type="button" class="btn-remove" onclick="this.closest('.dynamic-row').remove()" style="grid-column:span 4">Remove</button>
+        </div>`);
     }
+
     function addAch() {
-        const html = `<input type="text" name="achievement[]" placeholder="Achievement detail" class="border p-2 rounded w-full mb-2">`;
-        document.getElementById('ach-container').insertAdjacentHTML('beforeend', html);
+      document.getElementById('ach-container').insertAdjacentHTML('beforeend',
+        `<div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
+          <input type="text" name="achievement[]" placeholder="Achievement detail">
+          <button type="button" class="btn-remove" style="float:none;margin:0;white-space:nowrap;" onclick="this.parentElement.remove()">✕</button>
+        </div>`);
     }
+
     function addProj() {
-        const html = `<div class="border p-4 rounded bg-gray-50 mb-4"><div class="grid grid-cols-2 gap-2 mb-2"><input type="text" name="proj_title[]" placeholder="Project Title" class="border p-2 rounded" required><input type="text" name="proj_tech[]" placeholder="Tech Stack" class="border p-2 rounded" required></div><div class="relative"><textarea name="proj_desc[]" rows="3" placeholder="Enter rough bullet points here..." class="border p-2 rounded w-full pr-32" required></textarea><button type="button" onclick="enhanceText(this)" class="absolute bottom-3 right-3 bg-purple-100 text-purple-700 text-sm px-3 py-1 rounded hover:bg-purple-200 transition">✨ Enhance</button></div></div>`;
-        document.getElementById('proj-container').insertAdjacentHTML('beforeend', html);
+      document.getElementById('proj-container').insertAdjacentHTML('beforeend', `
+        <div class="dynamic-row">
+          <div class="grid-2" style="margin-bottom:10px;">
+            <input type="text" name="proj_title[]" placeholder="Project Title" required>
+            <input type="text" name="proj_tech[]" placeholder="Tech Stack" required>
+          </div>
+          <textarea name="proj_desc[]" rows="3" placeholder="Enter rough bullet points here..." required></textarea>
+          <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance with AI</button>
+          <button type="button" class="btn-remove" onclick="this.closest('.dynamic-row').remove()">Remove</button>
+        </div>`);
     }
+
     function addSkill() {
-        const html = `<input type="text" name="skill[]" placeholder="Category: Skills" class="border p-2 rounded w-full mb-2">`;
-        document.getElementById('skill-container').insertAdjacentHTML('beforeend', html);
+      document.getElementById('skill-container').insertAdjacentHTML('beforeend',
+        `<div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
+          <input type="text" name="skill[]" placeholder="Category: Skills">
+          <button type="button" class="btn-remove" style="float:none;margin:0;white-space:nowrap;" onclick="this.parentElement.remove()">✕</button>
+        </div>`);
     }
+
     function addResp() {
-        const html = `<div class="border p-4 rounded bg-gray-50 mb-4"><div class="grid grid-cols-2 gap-2 mb-2"><input type="text" name="resp_title[]" placeholder="Role at Organization" class="border p-2 rounded" required><input type="text" name="resp_date[]" placeholder="Date" class="border p-2 rounded" required></div><div class="relative"><textarea name="resp_desc[]" rows="2" placeholder="Enter rough responsibilities here..." class="border p-2 rounded w-full pr-32" required></textarea><button type="button" onclick="enhanceText(this)" class="absolute bottom-3 right-3 bg-purple-100 text-purple-700 text-sm px-3 py-1 rounded hover:bg-purple-200 transition">✨ Enhance</button></div></div>`;
-        document.getElementById('resp-container').insertAdjacentHTML('beforeend', html);
+      document.getElementById('resp-container').insertAdjacentHTML('beforeend', `
+        <div class="dynamic-row">
+          <div class="grid-2" style="margin-bottom:10px;">
+            <input type="text" name="resp_title[]" placeholder="Role at Organization" required>
+            <input type="text" name="resp_date[]" placeholder="Date" required>
+          </div>
+          <textarea name="resp_desc[]" rows="2" placeholder="Enter rough responsibilities here..." required></textarea>
+          <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance with AI</button>
+          <button type="button" class="btn-remove" onclick="this.closest('.dynamic-row').remove()">Remove</button>
+        </div>`);
     }
-</script>
+
+    // ── Loading overlay on submit ──
+    document.getElementById('resumeForm')?.addEventListener('submit', function() {
+      document.getElementById('loadingOverlay').classList.add('active');
+    });
+  </script>
+
 </body>
 </html>

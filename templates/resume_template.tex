@@ -1,51 +1,210 @@
-\documentclass[a4paper,10pt]{article}
-\usepackage[utf8]{inputenc}
+%-------------------------
+% Resume in LaTeX — Dynamic Template
+% All <<PLACEHOLDER>> markers are replaced by Django backend
+% License : MIT
+%-------------------------
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{ragged2e}
+\usepackage[empty]{fullpage}
+\usepackage{wrapfig}
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{titlesec}
 \usepackage{geometry}
-\geometry{a4paper, margin=0.75in}
-\usepackage{hyperref}
+\usepackage{marvosym}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{cfr-lm}
+\usepackage[T1]{fontenc}
 
-\newcommand{\projectheader}[2]{\noindent\textbf{#1} \hfill \textit{#2}}
-\newenvironment{cvitemize}{\begin{itemize}}{\end{itemize}}
-\hypersetup{pdfborder={0 0 0}}
+%----------------------------------------
+% Page Formatting
+%----------------------------------------
+
+\setlength{\multicolsep}{0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\geometry{left=1.4cm, top=0.8cm, right=1.2cm, bottom=1cm}
+
+\usepackage[most]{tcolorbox}
+
+\tcbset{
+frame code={},
+center title,
+left=0pt,
+right=0pt,
+top=0pt,
+bottom=0pt,
+colback=gray!20,
+colframe=white,
+width=\dimexpr\textwidth\relax,
+enlarge left by=-2mm,
+boxsep=4pt,
+arc=0pt,outer arc=0pt
+}
+
+\urlstyle{same}
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+%----------------------------------------
+% Section formatting
+%----------------------------------------
+
+\titleformat{\section}
+{\vspace{2pt}\scshape\raggedright\large}
+{}{0em}{}
+[\color{black}\titlerule \vspace{1pt}]
+
+%----------------------------------------
+% Column Types
+%----------------------------------------
+
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+
+%----------------------------------------
+% Custom Commands
+%----------------------------------------
+
+\newcommand{\resumePOR}[3]{
+\item
+\begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+\textbf{#1} #2 & \textit{\small #3}
+\end{tabular*}
+}
+
+\newcommand{\resumeSubheading}[4]{
+\item
+\begin{tabular*}{0.98\textwidth}{l@{\extracolsep{\fill}}r}
+\textbf{#1} & \textit{\footnotesize #4} \\
+\textit{\footnotesize #3} & \footnotesize #2
+\end{tabular*}
+}
+
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=3ex, itemsep=0.6mm]}
+\newcommand{\resumeItemListEnd}{\end{itemize}}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0mm, itemsep=2mm]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+
+\newcommand{\cvsection}[1]{
+\begin{tcolorbox}
+\textbf{\large #1}
+\end{tcolorbox}
+}
+
+%----------------------------------------
+% Personal Info (injected by backend)
+%----------------------------------------
+
+\newcommand{\name}{<<NAME>>}
+\newcommand{\subtitle}{<<SUBTITLE>>}
+\newcommand{\phone}{<<PHONE>>}
+\newcommand{\emaila}{<<EMAIL>>}
+
 \begin{document}
+\fontfamily{cmr}\selectfont
 
-\begin{center}
-    {\Huge \textbf{<<NAME>>}} \\
-    \vspace{2mm}
-    {\large <<SUBTITLE>>} \\
-    \vspace{2mm}
-    <<PHONE>> \ $|$ \ <<EMAIL>> \ $|$ \ \href{<<GITHUB_URL>>}{/<<GITHUB_TEXT>>}
-\end{center}
+%-----------------------------------------------------------
+% HEADER
+%-----------------------------------------------------------
 
-\vspace{2mm}
-\section*{Education}
-\hrule\vspace{2mm}
-\begin{center}
-\begin{tabular}{|l|l|p{3cm}|l|}
-\hline
-\textbf{Year} & \textbf{Degree} & \textbf{Institute} & \textbf{CGPA / \%} \\
-\hline
-<<EDUCATION_ROWS>>
-\end{tabular}
-\end{center}
+\parbox{\dimexpr\linewidth\relax}{
+\begin{tabularx}{\linewidth}{L r}
 
-\section*{Technical Skills}
-\hrule\vspace{2mm}
-\begin{itemize}
+\textbf{\Large \name} & {\footnotesize \faPhone\ +91-\phone}\\
+
+\subtitle & \href{mailto:\emaila}{\footnotesize \faEnvelope\ \emaila} \\
+
+& \href{<<GITHUB_URL>>}{\footnotesize \faGithub\ <<GITHUB_TEXT>>} \\
+
+& \href{<<LINKEDIN_URL>>}{\footnotesize \faLinkedin\ <<LINKEDIN_TEXT>>}
+
+\end{tabularx}
+}
+
+\vspace{-4mm}
+
+%-----------------------------------------------------------
+% EDUCATION
+%-----------------------------------------------------------
+
+\section{\textbf{Education}}
+
+\resumeSubHeadingListStart
+
+<<EDUCATION_ITEMS>>
+
+\resumeSubHeadingListEnd
+
+\vspace{-5mm}
+
+%-----------------------------------------------------------
+% SKILLS
+%-----------------------------------------------------------
+
+\section{\textbf{Technical Skills}}
+
+\begin{itemize}[leftmargin=0.05in, itemsep=0pt]
+
 <<SKILL_ITEMS>>
+
 \end{itemize}
 
-\section*{Projects}
-\hrule\vspace{2mm}
+\vspace{-4mm}
+
+%-----------------------------------------------------------
+% POSITIONS OF RESPONSIBILITY
+%-----------------------------------------------------------
+
+\section{\textbf{Positions of Responsibility}}
+
+\resumeSubHeadingListStart
+
+<<RESPONSIBILITY_ITEMS>>
+
+\resumeSubHeadingListEnd
+
+\vspace{-4mm}
+
+%-----------------------------------------------------------
+% PROJECTS
+%-----------------------------------------------------------
+
+\section{\textbf{Projects}}
+
+\resumeSubHeadingListStart
+
 <<PROJECT_ITEMS>>
 
-\section*{Achievements}
-\hrule\vspace{2mm}
-\begin{itemize}
-<<ACHIEVEMENT_ITEMS>>
-\end{itemize}
+\resumeSubHeadingListEnd
 
-\section*{Positions of Responsibility}
-\hrule\vspace{2mm}
-<<RESPONSIBILITY_ITEMS>>
+%-----------------------------------------------------------
+% ACHIEVEMENTS
+%-----------------------------------------------------------
+
+\section{\textbf{Achievements}}
+
+\resumeSubHeadingListStart
+
+<<ACHIEVEMENT_ITEMS>>
+
+\resumeSubHeadingListEnd
+
 \end{document}

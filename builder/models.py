@@ -1,18 +1,33 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class ResumeData(models.Model):
+    """Stores all user resume data including dynamic sections as JSON."""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='resumes')
+
+    # ── Personal Info ──
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     linkedin = models.URLField(blank=True, null=True)
-    summary = models.TextField(blank=True)
+    github = models.URLField(blank=True, null=True)
+    summary = models.TextField(blank=True)  # Used as subtitle/degree line
+
+    # ── Dynamic Sections (stored as JSON arrays) ──
     education = models.JSONField(default=list)
-    experience = models.JSONField(default=list)
+    experience = models.JSONField(default=list)       # Positions of responsibility
     skills = models.JSONField(default=list)
     projects = models.JSONField(default=list, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True )
+    achievements = models.JSONField(default=list, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.name} - {self.user.username}"
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Resume'
+        verbose_name_plural = 'Resumes'
