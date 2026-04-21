@@ -400,7 +400,7 @@ def rename_resume(request, resume_id):
 # ════════════════════════════════════════════════
 
 def enhance_text(request):
-    """API Endpoint to enhance resume bullet points using Gemini AI."""
+    """API Endpoint to enhance resume bullet points using Gemini AI with token optimization."""
     if request.method != 'POST':
         return JsonResponse({'error': 'Invalid request method'}, status=400)
 
@@ -411,24 +411,63 @@ def enhance_text(request):
         if not original_text:
             return JsonResponse({'error': 'No text provided'}, status=400)
 
-        prompt = f"""
-        Rewrite the following resume bullet points to be highly professional,
-        impactful, and action-oriented. Use strong action verbs.
-        Do not add fake metrics or numbers that aren't there.
-        Return ONLY the enhanced bullet points as plain text separated by newlines.
-        Do NOT use markdown (like asterisks or bullet characters like -, *, •).
-        Just return the raw sentences.
+        # Fallback: Simple enhancement without API if needed
+        def simple_enhance(text):
+            """Fallback enhancement using basic text processing."""
+            lines = text.split('\n')
+            enhanced = []
+            action_verbs = [
+                'Developed', 'Implemented', 'Optimized', 'Designed', 'Created',
+                'Enhanced', 'Improved', 'Spearheaded', 'Collaborated', 'Managed'
+            ]
+            
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    continue
+                # Remove markdown bullets
+                line = line.lstrip('*-•').strip()
+                # Add action verb if missing
+                if line and not any(line.startswith(verb) for verb in action_verbs):
+                    line = f"* Developed and enhanced {line.lower()}"
+                else:
+                    line = f"* {line}"
+                enhanced.append(line)
+            
+            return '\n'.join(enhanced) if enhanced else original_text
 
-        Original Text:
-        {original_text}
-        """
+        try:
+            genai.configure(api_key=settings.GOOGLE_API_KEY)
+            model = genai.GenerativeModel(
+                'gemini-2.0-flash',
+                generation_config={
+                    "max_output_tokens": 300  # Limit to 300 tokens to reduce consumption
+                }
+            )
+            
+            prompt = f"""Rewrite the following resume bullet points to be professional and action-oriented.
+Use strong action verbs. Do NOT add fake metrics or numbers.
+Return ONLY the enhanced text (no markdown, no asterisks).
 
-        genai.configure(api_key=settings.GOOGLE_API_KEY)
-        model = genai.GenerativeModel('gemini-2.0-flash')
-        response = model.generate_content(prompt)
+Text: {original_text}"""
 
-        cleaned = response.text.replace('*', '').replace('•', '').strip()
-        return JsonResponse({'enhanced_text': cleaned})
+            response = model.generate_content(prompt)
+            cleaned = response.text.replace('*', '').replace('•', '').strip()
+            return JsonResponse({'enhanced_text': cleaned})
+        
+        except Exception as api_error:
+            error_str = str(api_error)
+            print(f"API Error: {error_str}")  # Log for debugging
+            
+            # If API fails (quota exceeded, key invalid, etc.), use fallback
+            fallback_text = simple_enhance(original_text)
+            return JsonResponse({
+                'enhanced_text': fallback_text,
+                'warning': 'Using basic enhancement (API unavailable)'
+            }, status=200)
 
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        print(f"Unexpected error: {str(e)}")
+        return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)

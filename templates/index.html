@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Resume Builder</title>
-  <meta name="description" content="Generate professional AI-powered resumes with LaTeX quality PDF output.">
+  <title>Resume Builder</title>
+  <meta name="description" content="Create professional resumes with clean LaTeX quality PDF output.">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
   <style>
-    /* ============================================================
-       CSS Variables (Design Tokens)
-       ============================================================ */
+    
+       /* CSS Variables (Design Tokens) */
+
     :root {
-      --bg:       #0a0a0f;
-      --surface:  #111118;
-      --surface2: #1a1a24;
-      --border:   #2a2a3a;
-      --border2:  #3a3a50;
-      --accent:   #7c5cfc;
-      --accent2:  #a78bfa;
-      --teal:     #14b8a6;
-      --text:     #f0eeff;
-      --muted:    #8b8aa0;
-      --muted2:   #5a5a70;
-      --danger:   #ef4444;
+      --bg:       #f4f5f7;
+      --surface:  #ffffff;
+      --surface2: #eef0f4;
+      --border:   #d5d9e0;
+      --border2:  #bfc5ce;
+      --accent:   #3d5a80;
+      --accent2:  #2c4a6e;
+      --teal:     #3d5a80;
+      --text:     #1a1a2e;
+      --muted:    #6b7280;
+      --muted2:   #9ca3af;
+      --danger:   #c0392b;
     }
 
     *, *::before, *::after {
@@ -49,7 +49,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px 40px;
-      background: rgba(10, 10, 15, 0.92);
+      background: rgba(255,255,255,0.95);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
@@ -57,7 +57,7 @@
     .logo {
       font-family: 'DM Serif Display', serif;
       font-size: 22px;
-      color: var(--accent2);
+      color: var(--accent);
       letter-spacing: -0.5px;
     }
 
@@ -80,7 +80,7 @@
     .nav-links a:hover { color: var(--accent2); }
 
     .badge {
-      background: linear-gradient(135deg, var(--accent), var(--teal));
+      background: var(--teal);
       color: #fff;
       font-size: 10px;
       padding: 3px 10px;
@@ -100,15 +100,15 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 700px 350px at 50% 0%, rgba(124,92,252,0.13), transparent);
+      background: transparent;
       pointer-events: none;
     }
 
     .eyebrow {
       display: inline-block;
-      background: rgba(124,92,252,0.1);
-      border: 1px solid rgba(124,92,252,0.3);
-      color: var(--accent2);
+      background: rgba(61,90,128,0.08);
+      border: 1px solid rgba(61,90,128,0.2);
+      color: var(--accent);
       font-size: 12px;
       font-weight: 500;
       padding: 5px 14px;
@@ -236,7 +236,7 @@
     textarea:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(124,92,252,0.15);
+      box-shadow: 0 0 0 3px rgba(61,90,128,0.12);
     }
 
     input::placeholder,
@@ -274,9 +274,9 @@
 
     /* ── Buttons ── */
     .btn-add {
-      background: rgba(124,92,252,0.1);
-      border: 1px solid rgba(124,92,252,0.3);
-      color: var(--accent2);
+      background: rgba(61,90,128,0.08);
+      border: 1px solid rgba(61,90,128,0.2);
+      color: var(--accent);
       border-radius: 8px;
       padding: 5px 12px;
       font-family: 'DM Sans', sans-serif;
@@ -287,14 +287,14 @@
     }
 
     .btn-add:hover {
-      background: rgba(124,92,252,0.2);
+      background: rgba(61,90,128,0.15);
       border-color: var(--accent2);
     }
 
     .btn-remove {
-      background: rgba(239,68,68,0.08);
-      border: 1px solid rgba(239,68,68,0.2);
-      color: #f87171;
+      background: rgba(192,57,43,0.06);
+      border: 1px solid rgba(192,57,43,0.18);
+      color: var(--danger);
       border-radius: 8px;
       padding: 4px 10px;
       font-family: 'DM Sans', sans-serif;
@@ -306,13 +306,13 @@
     }
 
     .btn-remove:hover {
-      background: rgba(239,68,68,0.15);
+      background: rgba(192,57,43,0.12);
     }
 
     .btn-enhance {
-      background: rgba(20,184,166,0.1);
-      border: 1px solid rgba(20,184,166,0.3);
-      color: var(--teal);
+      background: rgba(61,90,128,0.08);
+      border: 1px solid rgba(61,90,128,0.2);
+      color: var(--accent);
       border-radius: 8px;
       padding: 5px 12px;
       font-family: 'DM Sans', sans-serif;
@@ -323,12 +323,12 @@
       margin-top: 8px;
     }
 
-    .btn-enhance:hover { background: rgba(20,184,166,0.2); }
+    .btn-enhance:hover { background: rgba(61,90,128,0.15); }
     .btn-enhance:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .btn-submit {
       width: 100%;
-      background: linear-gradient(135deg, var(--accent), #5b3fd4);
+      background: var(--teal);
       color: #fff;
       border: none;
       border-radius: 12px;
@@ -349,7 +349,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(10,10,15,0.92);
+      background: rgba(255,255,255,0.92);
       backdrop-filter: blur(10px);
       z-index: 9999;
       justify-content: center;
@@ -364,7 +364,7 @@
       width: 48px;
       height: 48px;
       border: 3px solid var(--border);
-      border-top: 3px solid var(--accent2);
+      border-top: 3px solid var(--accent);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -373,7 +373,7 @@
 
     .loading-text {
       font-size: 16px;
-      color: var(--accent2);
+      color: var(--accent);
       font-weight: 500;
     }
 
@@ -395,7 +395,7 @@
       font-weight: 500;
     }
 
-    .login-msg a:hover { color: var(--teal); }
+    .login-msg a:hover { color: var(--accent); }
 
     /* ── Footer ── */
     footer {
@@ -428,7 +428,7 @@
 
   <!-- ── NAVBAR ── -->
   <nav>
-    <div class="logo">Resume<span>AI</span></div>
+    <div class="logo">Resume <span>Builder</span></div>
     <div class="nav-links">
       {% if user.is_authenticated %}
         <a href="{% url 'dashboard' %}">📂 Dashboard</a>
@@ -439,9 +439,9 @@
 
   <!-- ── HERO ── -->
   <header class="hero">
-    <p class="eyebrow">🚀 AI Resume Builder</p>
-    <h1>Generate Your<br /><em>Professional Resume.</em></h1>
-    <p class="hero-sub">Fill in your details below. AI will enhance your bullet points and generate a clean, LaTeX-compiled PDF.</p>
+    <p class="eyebrow">Resume Builder</p>
+    <h1>Create Your<br /><em>Professional Resume.</em></h1>
+    <p class="hero-sub">Fill in your details below and generate a clean, LaTeX-compiled PDF resume in seconds.</p>
   </header>
 
   <!-- ── MAIN ── -->
@@ -535,7 +535,7 @@
           <span class="card-icon" style="background:rgba(52,211,153,0.12)">🚀</span>
           <div>
             <h2>Key Projects</h2>
-            <p>Write rough notes — AI will enhance to professional bullet points</p>
+            <p>Write rough notes — they will be enhanced to professional bullet points</p>
           </div>
         </div>
         <div class="section-row">
@@ -549,7 +549,7 @@
               <input type="text" name="proj_tech[]" placeholder="Tech Stack (Python, Django...)" required>
             </div>
             <textarea name="proj_desc[]" rows="3" placeholder="Enter rough bullet points here (one per line)..." required></textarea>
-            <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance with AI</button>
+            <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance</button>
           </div>
         </div>
       </div>
@@ -592,7 +592,7 @@
               <input type="text" name="resp_date[]" placeholder="Date (Jun 2025 - Jan 2026)" required>
             </div>
             <textarea name="resp_desc[]" rows="2" placeholder="Enter rough responsibilities here (one per line)..." required></textarea>
-            <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance with AI</button>
+            <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance</button>
           </div>
         </div>
       </div>
@@ -613,7 +613,7 @@
   </footer>
 
   <script>
-    // ── AI Enhancement ──
+    // ── Text Enhancement ──
     async function enhanceText(btn) {
       const textarea = btn.previousElementSibling;
       const originalText = textarea.value;
@@ -637,7 +637,7 @@
           alert("Error: " + data.error);
         }
       } catch (error) {
-        alert("Failed to connect to the AI service.");
+        alert("Failed to connect to the enhancement service.");
       } finally {
         btn.innerHTML = originalBtnText;
         btn.disabled = false;
@@ -672,7 +672,7 @@
             <input type="text" name="proj_tech[]" placeholder="Tech Stack" required>
           </div>
           <textarea name="proj_desc[]" rows="3" placeholder="Enter rough bullet points here..." required></textarea>
-          <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance with AI</button>
+          <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance</button>
           <button type="button" class="btn-remove" onclick="this.closest('.dynamic-row').remove()">Remove</button>
         </div>`);
     }
@@ -693,7 +693,7 @@
             <input type="text" name="resp_date[]" placeholder="Date" required>
           </div>
           <textarea name="resp_desc[]" rows="2" placeholder="Enter rough responsibilities here..." required></textarea>
-          <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance with AI</button>
+          <button type="button" class="btn-enhance" onclick="enhanceText(this)">✨ Enhance</button>
           <button type="button" class="btn-remove" onclick="this.closest('.dynamic-row').remove()">Remove</button>
         </div>`);
     }

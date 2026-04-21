@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resume Ready — ResumeAI</title>
+  <title>Resume Ready — Resume Builder</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:       #0a0a0f;
-      --surface:  #111118;
-      --border:   #2a2a3a;
-      --accent:   #7c5cfc;
-      --accent2:  #a78bfa;
-      --teal:     #14b8a6;
-      --text:     #f0eeff;
-      --muted:    #8b8aa0;
-      --muted2:   #5a5a70;
+      --bg:       #f4f5f7;
+      --surface:  #ffffff;
+      --border:   #d5d9e0;
+      --accent:   #3d5a80;
+      --accent2:  #2c4a6e;
+      --teal:     #3d5a80;
+      --text:     #1a1a2e;
+      --muted:    #6b7280;
+      --muted2:   #9ca3af;
     }
 
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -54,7 +54,7 @@
     .success-card h1 {
       font-family: 'DM Serif Display', serif;
       font-size: 24px;
-      color: var(--teal);
+      color: var(--accent);
       margin-bottom: 10px;
     }
 
@@ -67,7 +67,7 @@
 
     .btn-download {
       display: inline-block;
-      background: linear-gradient(135deg, var(--teal), #0d9488);
+      background: var(--teal);
       color: #fff;
       border: none;
       border-radius: 12px;
@@ -85,9 +85,9 @@
 
     .btn-dashboard {
       display: inline-block;
-      background: rgba(124,92,252,0.1);
-      border: 1px solid rgba(124,92,252,0.3);
-      color: var(--accent2);
+      background: rgba(61,90,128,0.08);
+      border: 1px solid rgba(61,90,128,0.2);
+      color: var(--accent);
       border-radius: 10px;
       padding: 10px 20px;
       font-size: 13px;
@@ -96,7 +96,7 @@
       transition: background 0.2s;
     }
 
-    .btn-dashboard:hover { background:rgba(124,92,252,0.2); }
+    .btn-dashboard:hover { background:rgba(61,90,128,0.15); }
   </style>
 </head>
 <body>
